@@ -9,7 +9,7 @@ const EventItem = (props) => {
   const { id, title, location, date, image } = props;
 
   // Convert to readable date
-  const dateReadable = new Date(date).toLocaleDateString("vn-VN", {
+  const dateReadable = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",

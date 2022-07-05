@@ -1,32 +1,43 @@
 import { useRouter } from "next/router";
+import { Fragment } from "react";
+import EventList from "../../components/events/EventList";
+import { getFilteredEvents } from "../../dummy_data";
 
 const FilteredPage = () => {
   const router = useRouter();
   //   const someId = router.query["some-id"];
   //   const getData = getStaticProps () =>{}
 
-  let content = (
-    <div>
-      <h1>Filtered Events Page!</h1>
-      <h2>Show Filtered Events here!</h2>
-    </div>
-  );
-
-  if (router.query.slug) {
-    const [eventId, ...restId] = router.query.slug;
-    console.log(router.query);
-    console.log(eventId);
-    console.log(restId);
-    content = (
-      <div>
-        <h1>Filtered Events Page: {restId}</h1>
-        <h2>Show Filtered Events here!</h2>
-      </div>
-    );
-    return content;
+  if (!router.query.slug || router.query.slug.length > 2) {
+    return <p>Nothing was found!</p>;
   }
+  const [year, month, ...restId] = router.query.slug;
+  console.log(router.query.slug.length);
 
-  return content;
+  const selectedDate = {
+    year,
+    month,
+  };
+
+  console.log(selectedDate);
+
+  const filteredData = getFilteredEvents(selectedDate);
+  console.log(filteredData);
+
+  if (filteredData.length === 0) {
+    return (
+      <Fragment>
+        <h3>No event was matched!</h3>
+      </Fragment>
+    );
+  } else {
+    return (
+      <Fragment>
+        <EventList items={filteredData} />
+        {/* <h2>Hello Temporary!</h2> */}
+      </Fragment>
+    );
+  }
 };
 
 export default FilteredPage;
